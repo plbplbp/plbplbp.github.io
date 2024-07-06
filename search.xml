@@ -3,7 +3,19 @@
   <entry>
     <title>测试</title>
     <url>/2024/06/13/%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1122<br>33</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>11</p>
+<p>22</p>
+<p>\</p>
+<p>33</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<p>44</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt;br/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>55</p>
+<p><span><span style="font-family:Verdana, Arial, Helvetica, sans-serif;line-height:19px;text-indent:26px;"><span style="font-size:14px;"><span style="font-family:Arial;line-height:26px;"><br></span></span></span></span></p>
+
+<p>66</p>
 <p><img src="https://jsd.onmicrosoft.cn/gh/plbplbp/tuchuang/img/20240706235737.png"></p>
 ]]></content>
       <categories>
